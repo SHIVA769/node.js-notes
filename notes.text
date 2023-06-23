@@ -1,0 +1,347 @@
+const app=require('./app')
+//console.log(app.y)
+// interviwe questions 
+// what is filter functions 
+ // ans : it is used for array 
+ const arr =[1,2,3,4,554,235,545]
+ 
+ let result =arr.filter((item)=>{
+ return item<4
+ })
+ console.warn(result)  
+
+/*
+const app=require('./app')
+//console.log(app.y)
+// interviwe questions 
+// what is filter functions 
+ // ans : it is used for array 
+ const arr =[1,2,3,4,554,235,545]
+ /// send file  and learn how remove  .html in browser side in your  website  and  404 page
+ const  express=require('express')
+const path=require('path')
+
+const app=express();
+const publicpath=path.join(__dirname,'public');
+
+//app.use(express.static(publicpath))
+app.get('',(req,res)=>{
+     res.sendFile(`${publicpath}/about.html`)
+})
+app.listen(4000);
+ let result =arr.filter((item)=>{
+ return item<4
+ })
+ console.warn(result)  
+ 
+const http = require('http')
+
+http.createServer((req,res)=>{
+    res.write("<h1> hi there rfew</h1>");
+    res.end();
+}).listen(4500);
+*/
+const colurs= require("colors")
+console.log("hekki".red)
+///simple api
+const http = require('http')
+const data = require('./data')
+
+http.createServer((req,res)=>{
+    res.writeHead(501,{'content-Type':'application\json'});
+    res.write(JSON.stringify(data));
+    res.end();
+}).listen(4500);
+//command line
+
+const fs=require('fs')
+const input=process.argv;
+if(input[2]=='add'){
+fs.writeFileSync(input[3],input[4])
+}else if(input[2]=='remove'){
+    fs.unlinkSync(input[3])
+}else{
+    console.log("invalid input")
+}
+ //file system
+ 
+const fs=require('fs')
+const path=require('path')
+const dirpath=path.join(__dirname,'files')
+for(i=0;i<5;i++){
+    fs.writeFileSync(`hello${i}.text`,'hier')
+}
+
+const fs=require('fs')
+const path=require('path')
+const dirpath=path.join(__dirname,'crud')
+const file=`${dirpath}/apple.txt`;
+
+/*fs.writeFileSync(file,'node js is creates api')
+
+fs.readFile(file,'utf-8',(err,items)=>{
+    console.log(items)
+})
+
+
+fs.appendFile(file,'and add new  file',(err,upa)=>{
+    if(!err)  console.log(upa)
+}) */
+fs.unlinkSync(file)
+
+// archieture of node js
+1 callback stack
+2 node api
+3 callback queue
+
+let a=10;
+let b=0;
+
+// Promise function
+let waitingdata=new Promise((reslove,reject)=>{
+    setTimeout(()=>{
+ reslove(30)
+},20000)
+})
+waitingdata.then((b)=>{
+console.log(a+b)
+})
+
+console.log("stendart")
+
+///////////////////////////////////////express////////////////////////
+/// used yhe html and JSON in express
+const  express=require('express')
+const app=express();
+
+app.get('',( req,res)=>{
+    
+res.send(
+ `<h1>'hi there <h1/> <a href='/about'> go anou page</a>`
+)
+})
+
+app.get('/about',( req,res)=>{
+res.send(`<input type="text" placeholder="search"value=" ${req.query.name}"/>
+   <button></button>
+
+`)
+})
+
+app.listen(4000);
+///make and html files in expres using path module
+const  express=require('express')
+const path=require('path')
+
+const app=express();
+const publicpath=path.join(__dirname,'public');
+
+app.use(express.static(publicpath))
+app.listen(4000);
+/// dyamnic page
+const  express=require('express')
+const path=require('path')
+
+const app=express();
+const publicpath=path.join(__dirname,'public');
+
+//app.use(express.static(publicpath))
+// set up ejs template engine
+app.set('view engine','ejs')
+app.get('/profile',(req,res)=>{
+    const user={
+        name:'dev',
+        email:'ks1114404@gmail.com',
+        city:'delhi',
+        job:'developer',
+        skills:['php','java','node.js','react','c/c++']
+    }
+    res.render('profile',{user})
+})
+
+
+//// another file
+app.get('',(req,res)=>{
+     res.sendFile(`${publicpath}/about.html`)
+})
+app.listen(4000);
+
+/=============================================== middleware=====================================
+       if we are modifiy the request and response so we are use the middleware
+       with help  of middleware we modifiy login /sinup page and block our app in another country
+const  express=require('express')
+
+
+const app=express();
+
+ const age=( req,res,next)=>{
+    if(!req.query.age){
+        res.send('hi ther')
+    }
+  else if(req.query.age<18){
+        res.send('not for your')
+    }
+    else{
+        next();
+    }
+ }
+ app.use(age);
+app.get('',(req,res )={                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    )=>{
+    //console.log("psd")
+  //  next()
+  //   res.send('home')
+})
+
+
+//// another file
+app.get('',(req,res)=>{
+     res.send('home')
+})
+app.get('/profile',(req,res)=>{
+     res.send('profile')
+})
+app.listen(4000);
+
+
+//// conc datdabase
+const {MongoClient} = require('mongodb')
+const url= 'mongodb://localhost:27017';
+const databaseName='e-comm'
+const client= new MongoClient(url);
+
+async function dbConnect()
+{
+    let result = await client.connect();
+    db= result.db(databaseName);
+    return db.collection('products');
+  
+}
+module.exports= dbConnect;
+//read data in datdabase
+const express=require('express')
+const dbConnect=require('./mongodb')
+
+const app=express();
+app.use(express.json())
+
+app.get('/',async(req ,res)=>{
+    let data=await dbConnect()
+    data=await data.find().toarray()
+    res.send(data)
+})
+app.put('/',async(req,res)=>{
+    res.send({'updata data'})
+})
+app.listen(4000)
+
+/// inserted the data
+const dbConnect = require('./mongodb');
+
+const insertData=async ()=>{
+   let data = await dbConnect();
+  let result = await data.insert(
+      [
+          {name:'max 5',brand:'micromax',price:420,category:'mobile'},
+          {name:'max 6',brand:'micromax',price:520,category:'mobile'},
+          {name:'max 7',brand:'micromax',price:620,category:'mobile'},
+
+      ]
+  )
+  if(result.acknowledged)
+  {
+      console.warn("data is inserted")
+  }
+}
+
+insertData();
+//delted the data
+const dbConnect = require('./mongodb');
+
+const deleteData=async ()=>{
+let data = await dbConnect();
+let result = await data.deleteMany({name:'max 7'})
+console.log(result)
+
+}
+ 
+deleteData();
+
+//middleware
+module.exports = (req, resp, next) => {
+    if (!req.query.age) {
+        resp.send("Please provide your age")
+    }
+    else if (req.query.age<18) {
+        resp.send("You are under aged")
+    }
+    else {
+        next();
+    }
+}
+
+
+////same operations with  mongoose
+const mongoose=require('mongoose')
+const main= async()=>{
+    await mongoose.connect("mongodb://localhost:27017/ecommerence")
+   const productschema=new mongoose.Schema({
+    name:String
+   });
+   const productmodel=mongoose.model('prody',productschema)
+   let data=new productmodel({name:'m8'})
+   let result=await data.save();
+   console.log(result)
+}
+main()
+///////////////////////////////////////api  with mongoose///////////////////
+const mongoose=require('mongoose')
+const express=require('express')
+require('./config')
+const products=require('./product')
+
+const app=express()
+app.use(express.json)
+app.post("/create",async(req,res)=>{
+    let data= new products(res.body)
+    let result=await data.save();
+    console.log(res.body)
+    res.send("done")
+})
+app.get('/list',async(req,res)=>{
+    console.log(res.params)
+    let  data=await products.find();
+    res.send(data)
+})
+
+app.delete('/delte',async(req,res)=>{
+    console.log(res.params)
+    let  data=await products.deleteOne();
+    res.send(data)
+})
+
+app.listen(3000)
+
+
+
+///multiple file uploadred
+const express = require('express');
+const multer = require('multer');
+
+const app = express();
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'view')
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.fieldname + "-" + Date.now() + ".jpg")
+        }
+    })
+}).single('file_name');
+
+app.post("/upload", upload, (req, resp) => {
+    resp.send("file upload")
+});
+
+app.listen(5000)
